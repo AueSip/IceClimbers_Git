@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Assets/world tileset.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Levels/Campfire.gd" type="Script" id=2]
+[ext_resource path="res://Assets/light.png" type="Texture" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 256, 96, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 288, 64, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 288, 96, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 256, 64, 32, 32 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ],
+"loop": true,
+"name": "Lit",
+"speed": 4.0
+}, {
+"frames": [ SubResource( 4 ) ],
+"loop": true,
+"name": "Unlit",
+"speed": 5.0
+} ]
+
+[sub_resource type="CircleShape2D" id=6]
+radius = 43.0
+
+[node name="Campfire" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 5 )
+animation = "Lit"
+frame = 1
+playing = true
+
+[node name="HeatArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HeatArea"]
+shape = SubResource( 6 )
+
+[node name="HeatRefresh" type="Timer" parent="."]
+
+[node name="Light2D" type="Light2D" parent="."]
+texture = ExtResource( 3 )
+texture_scale = 0.16
+color = Color( 0.956863, 0.752941, 0.270588, 1 )
+
+[connection signal="body_entered" from="HeatArea" to="." method="_on_HeatArea_body_entered"]
+[connection signal="body_exited" from="HeatArea" to="." method="_on_HeatArea_body_exited"]
+[connection signal="timeout" from="HeatRefresh" to="." method="_on_HeatRefresh_timeout"]

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://PlayerStats.gd" type="Script" id=1]
+
+[node name="PlayerStats" type="Node"]
+script = ExtResource( 1 )
+max_heat = 354
+
+[node name="TempTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="TempTimer" to="." method="_on_TempTimer_timeout"]
